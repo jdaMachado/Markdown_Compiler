@@ -12,8 +12,7 @@ def run():
     data = open_file(argv[1])
     return lexer(data)
 
-
-    
+  
 def lexer(filecontents):
     filecontents = list(filecontents)
     isItalic = False
@@ -22,8 +21,8 @@ def lexer(filecontents):
     bold_italic = ["*", "_"]
     i = 0
 
-
     while(i<len(filecontents)):
+        
         
         #Title
         if ( (filecontents[i-1] == "\n" or i == 0 ) and filecontents[i] == "!"):
@@ -38,7 +37,7 @@ def lexer(filecontents):
             final = replace_str_index(final, 37, "<title>" + titlestring + "</title>")
         
 # Paragraphs
-    #Paragraph at the start of a document
+        #Paragraph at the start of a document
         if ( i == 0 and filecontents[i] not in special_symbols): 
             pstring0 = ""
             x=0
@@ -58,17 +57,17 @@ def lexer(filecontents):
                         isItalic = True
                         pstring0 = replace_str_index(pstring0, x, "<em>")
                         x = x + 3 
-                        
-
+                    
                 x += 1
                 i += 1
                              
             final += "<p>" + pstring0 + "</p>" 
 
-    # Only applies if there's more than one line
+
+        # Tests for out of index range
         if ( len(filecontents) >= i+1): 
 
-    #Paragraph after a blank line
+            #Paragraph after a blank line
             if ( filecontents[i] == "\n" and filecontents[i+1] == "\n"): 
                 pstring1 = ""
                 i = i + 2
@@ -94,7 +93,7 @@ def lexer(filecontents):
                 if ( len(pstring1)>0):
                     final += "<p>" + pstring1 + "</p>" 
 
-    #Paragraph after a new line        
+            #Paragraph after a new line        
             if ( filecontents[i] == "\n" and filecontents[i-1] != "\n" and filecontents[i+1] not in special_symbols): 
                 i = i + 1
                 x = 0
@@ -122,39 +121,43 @@ def lexer(filecontents):
 
         #H1
         if ( filecontents[i] == "#" and filecontents[i-1] != "#" and filecontents[i+1] != "#"):
-            x = i + 1
+            i = i + 1
             h1string = ""
-            while ( x < len(filecontents)):
-                if ( filecontents[x]=="\n"):
+            while ( i < len(filecontents)):
+                if ( filecontents[i]=="\n"):
                     break
-                h1string += filecontents[x]
-                x += 1
+                h1string += filecontents[i]
+                i += 1
                 
-            final += "<h1>" + h1string + "</h1>"  
-
-        #H2
-        if ( filecontents[i] == "#" and filecontents[i-1] != "#" and filecontents[i+1] == "#" and filecontents[i+2] != "#"):
-            x = i + 2
-            h2string = ""
-            while ( x < len(filecontents)):
-                if ( filecontents[x]=="\n"):
-                    break
-                h2string += filecontents[x]
-                x += 1
-                
-            final += "<h2>" + h2string + "</h2>"
-
-        #H3
-        if ( filecontents[i] == "#" and filecontents[i-1] != "#" and filecontents[i+1] == "#" and filecontents[i+2] == "#" and filecontents[i+3] != "#"):
-            x = i + 3
-            h3string = ""
-            while ( x < len(filecontents)):
-                if ( filecontents[x]=="\n"):
-                    break
-                h3string += filecontents[x]
-                x += 1
-                
-            final += "<h3>" + h3string + "</h3>"
+            final += "<h1>" + h1string + "</h1>"
+        
+        # Tests for out of index range
+        if len(filecontents) >= i+2:
+            #H2
+            if ( filecontents[i] == "#" and filecontents[i-1] != "#" and filecontents[i+1] == "#" and filecontents[i+2] != "#"):
+                i = i + 2
+                h2string = ""
+                while ( i < len(filecontents)):
+                    if ( filecontents[i]=="\n"):
+                        break
+                    h2string += filecontents[i]
+                    i += 1
+                    
+                final += "<h2>" + h2string + "</h2>"
+        
+        # Tests for out of index range
+        if len(filecontents) >= i+3:
+            #H3
+            if ( filecontents[i] == "#" and filecontents[i-1] != "#" and filecontents[i+1] == "#" and filecontents[i+2] == "#" and filecontents[i+3] != "#"):
+                i = i + 3
+                h3string = ""
+                while ( i < len(filecontents)):
+                    if ( filecontents[i]=="\n"):
+                        break
+                    h3string += filecontents[i]
+                    i += 1
+                    
+                final += "<h3>" + h3string + "</h3>"
 
 
         # #Bold
@@ -171,7 +174,7 @@ def lexer(filecontents):
 
 
         i += 1
-#Final
+    #Final
     if ( i >= len(filecontents)):
         final += '</body></html>'
         return final
