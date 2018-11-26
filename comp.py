@@ -71,7 +71,7 @@ def lexer(filecontents):
     #Paragraph after a blank line
             if ( filecontents[i] == "\n" and filecontents[i+1] == "\n"): 
                 pstring1 = ""
-                i = i+2
+                i = i + 2
                 x = 0
                 while ( i < len(filecontents)):
                     if (filecontents[i] in special_symbols):
@@ -87,82 +87,75 @@ def lexer(filecontents):
                             isItalic = True
                             pstring1 = replace_str_index(pstring1, x, "<em>")
                             x=x+3 
-
-                    print(pstring1)
-
                             
                     x += 1
                     i += 1
 
-                
-                final += "<p>" + pstring1 + "</p>" 
-        i += 1
-                   
+                if ( len(pstring1)>0):
+                    final += "<p>" + pstring1 + "</p>" 
 
+    #Paragraph after a new line        
+            if ( filecontents[i] == "\n" and filecontents[i-1] != "\n" and filecontents[i+1] not in special_symbols): 
+                i = i + 1
+                x = 0
+                pstring2 = ""
+                while ( i < len(filecontents)):
+                    if (filecontents[i] in special_symbols):
+                        break
+                    pstring2 += filecontents[i]
 
-    # Only applies if there's more than one line
-        #if ( len(filecontents) >= i+1): 
+                    if (pstring2[x] in bold_italic ): #Italic 
+                        if (isItalic):
+                            isItalic = False
+                            pstring2 = replace_str_index(pstring2, x, "</em>")
+                        else:
+                            isItalic = True
+                            pstring2 = replace_str_index(pstring2, x, "<em>")
+                            x=x+3 
+                            
+                    x += 1
+                    i += 1
 
-    # #Paragraph after a new line        
-    #         if ( filecontents[i] == "\n" and filecontents[i-1] != "\n" and filecontents[i+1] not in special_symbols): 
-    #             i = i + 1
-    #             pstring2 = ""
-    #             while ( i < len(filecontents)):
-    #                 if (filecontents[i] in special_symbols):
-    #                     break
-    #                 pstring2 += filecontents[i]
-    #                 i += 1
-    #             final += "<p>" + pstring2 + "</p>"
+                final += "<p>" + pstring2 + "</p>"
           
               
 
-        # #H1
-        # if ( filecontents[i] == "#" and filecontents[i-1] != "#" and filecontents[i+1] != "#"):
-        #     x = i + 1
-        #     h1string = ""
-        #     while ( x < len(filecontents)):
-        #         if ( filecontents[x]=="\n"):
-        #             break
-        #         h1string += filecontents[x]
-        #         x += 1
+        #H1
+        if ( filecontents[i] == "#" and filecontents[i-1] != "#" and filecontents[i+1] != "#"):
+            x = i + 1
+            h1string = ""
+            while ( x < len(filecontents)):
+                if ( filecontents[x]=="\n"):
+                    break
+                h1string += filecontents[x]
+                x += 1
                 
-        #     final += "<h1>" + h1string + "</h1>"  
+            final += "<h1>" + h1string + "</h1>"  
 
-        # #H2
-        # if ( filecontents[i] == "#" and filecontents[i-1] != "#" and filecontents[i+1] == "#" and filecontents[i+2] != "#"):
-        #     x = i + 2
-        #     h2string = ""
-        #     while ( x < len(filecontents)):
-        #         if ( filecontents[x]=="\n"):
-        #             break
-        #         h2string += filecontents[x]
-        #         x += 1
+        #H2
+        if ( filecontents[i] == "#" and filecontents[i-1] != "#" and filecontents[i+1] == "#" and filecontents[i+2] != "#"):
+            x = i + 2
+            h2string = ""
+            while ( x < len(filecontents)):
+                if ( filecontents[x]=="\n"):
+                    break
+                h2string += filecontents[x]
+                x += 1
                 
-        #     final += "<h2>" + h2string + "</h2>"
+            final += "<h2>" + h2string + "</h2>"
 
-        # #H3
-        # if ( filecontents[i] == "#" and filecontents[i-1] != "#" and filecontents[i+1] == "#" and filecontents[i+2] == "#" and filecontents[i+3] != "#"):
-        #     x = i + 3
-        #     h3string = ""
-        #     while ( x < len(filecontents)):
-        #         if ( filecontents[x]=="\n"):
-        #             break
-        #         h3string += filecontents[x]
-        #         x += 1
+        #H3
+        if ( filecontents[i] == "#" and filecontents[i-1] != "#" and filecontents[i+1] == "#" and filecontents[i+2] == "#" and filecontents[i+3] != "#"):
+            x = i + 3
+            h3string = ""
+            while ( x < len(filecontents)):
+                if ( filecontents[x]=="\n"):
+                    break
+                h3string += filecontents[x]
+                x += 1
                 
-        #     final += "<h3>" + h3string + "</h3>"
+            final += "<h3>" + h3string + "</h3>"
 
-        # #Italic
-        # if (filecontents[i] in bold_italic and filecontents[i+1] not in bold_italic and filecontents[i-1] not in bold_italic):
-        #     x = i + 1
-        #     italicstring = ""
-        #     while ( x < len(filecontents)):
-        #         if (filecontents[x] in bold_italic and filecontents[x-1] != "\\"):
-        #             break
-        #         italicstring += filecontents[x]
-        #         x += 1
-                
-        #     final += "<em>" + italicstring + "</em>"
 
         # #Bold
         # if (filecontents[i] in bold_italic and filecontents[i-1] not in bold_italic and filecontents[i+1] in bold_italic and filecontents[i+2] not in bold_italic):
@@ -176,6 +169,8 @@ def lexer(filecontents):
                 
         #     final += "<strong>" + boldstring + "</strong>"
 
+
+        i += 1
 #Final
     if ( i >= len(filecontents)):
         final += '</body></html>'
