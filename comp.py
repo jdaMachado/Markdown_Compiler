@@ -65,7 +65,7 @@ def lexer(filecontents):
 
 
         # Tests for out of index range
-        if ( len(filecontents) >= i+1): 
+        if ( len(filecontents) >= i): 
 
             #Paragraph after a blank line
             if ( filecontents[i] == "\n" and filecontents[i+1] == "\n"): 
@@ -132,7 +132,7 @@ def lexer(filecontents):
             final += "<h1>" + h1string + "</h1>"
         
         # Tests for out of index range
-        if len(filecontents) >= i+2:
+        if len(filecontents) >= i+1:
             #H2
             if ( filecontents[i] == "#" and filecontents[i-1] != "#" and filecontents[i+1] == "#" and filecontents[i+2] != "#"):
                 i = i + 2
@@ -146,7 +146,7 @@ def lexer(filecontents):
                 final += "<h2>" + h2string + "</h2>"
         
         # Tests for out of index range
-        if len(filecontents) >= i+3:
+        if len(filecontents) >= i+2:
             #H3
             if ( filecontents[i] == "#" and filecontents[i-1] != "#" and filecontents[i+1] == "#" and filecontents[i+2] == "#" and filecontents[i+3] != "#"):
                 i = i + 3
