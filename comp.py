@@ -38,7 +38,7 @@ def close_ol(boolean):
 
 def run():
     data = open_file(argv[1])
-    return bold(italic(data))
+    return data
 
 
 def lexer(lines):
@@ -46,10 +46,14 @@ def lexer(lines):
     special_symbols = ["#", "!", "\n", '-']
     openul = False
     openol = False
+
+    
     
     for each_line in lines:
 
-    
+        each_line = bold(each_line)
+        each_line = italic(each_line)
+        
 #       Title
         if (each_line[0]=='!'):
 
