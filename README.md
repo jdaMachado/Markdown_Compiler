@@ -1,4 +1,7 @@
-# Simple Markdown Compiler that writes HTML into a document.
-Pedagogical project done entirely in Python, where every character ( char by char) is evaluated along the entire document content.
+# Simple Markdown Compiler
+Pedagogical project done entirely in Python, that converts a markdown document into HTML.
 
-Still {WIP}!
+Way to use: python3 comp.py markdown_document_name
+
+Special mention to Carlos Quental for helping me with RegEx.
+His github -> https://github.com/carlosquental
