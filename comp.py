@@ -64,7 +64,7 @@ def lexer(lines):
             final = replace_str_index(final, 59, "<title>" + titlestring + "</title>")
         
 #       Paragraph
-        if (each_line[0] not in special_symbols) and not (each_line[0].isdigit() and each_line[1] == '.'):
+        if (not (each_line[0] in special_symbols and each_line[1] ==' ')) and (not (each_line[0].isdigit() and each_line[1] == '.')):
 
             final += close_ul(openul)
             final += close_ol(openol)
@@ -101,6 +101,9 @@ def lexer(lines):
 
 #       UL
         if (each_line[0]=='-' and each_line[1] == ' '):
+
+            final += close_ol(openol)
+
             if not openul:
                 final += '<ul>'
                 openul = True
@@ -109,6 +112,9 @@ def lexer(lines):
 
 #       OL
         if (each_line[0].isdigit() and each_line[1] == '.'):
+
+            final += close_ul(openul)
+            
             if not openol:
                 final += '<ol>'
                 openol = True
