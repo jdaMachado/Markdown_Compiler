@@ -62,9 +62,15 @@ def lexer(lines):
 
             titlestring = each_line[1:-1] if each_line[-1] =='\n' else each_line[1:]
             final = replace_str_index(final, 59, "<title>" + titlestring + "</title>")
-        
+
+#       Empty Space
+        if (len(each_line) == 0):
+
+            final += each_line
+
+
 #       Paragraph
-        if (not (each_line[0] in special_symbols and each_line[1] ==' ')) and (not (each_line[0].isdigit() and each_line[1] == '.')):
+        if (not (each_line[0] in special_symbols or each_line[1] ==' ')) and (not (each_line[0].isdigit() and each_line[1] == '.')):
 
             final += close_ul(openul)
             final += close_ol(openol)
@@ -120,7 +126,8 @@ def lexer(lines):
                 openol = True
             listring = each_line[2:-1] if each_line[-1] =='\n' else each_line[2:]
             final += '<li>' + listring + '</li>'
-            
+
+         
 
 #   Final
         
